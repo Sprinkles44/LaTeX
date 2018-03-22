@@ -1,0 +1,248 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{venturis2}
+\usepackage{mathtools}
+\begin{document}
+\begin{center}
+\begin{large}
+{\bf Taking the SVD of a Matrix}
+\end{large}
+\end{center}
+
+\vskip0.3in
+\begin{center}
+{\large  Oscar Alvarez}\\
+Texas Woman's University\\
+June 2016
+\end{center}
+\vskip0.6in
+\section{Solving for the SVD}
+
+\subsection{The SVD of a matrix.}
+
+The SVD is defined as the singular value decomposition of a matrix. 
+
+We are going to be dealing with eigenvalues and eigenvectors so let us say that we do not have a perfectly square matrix. (We have an nxm instead of an nxn matrix).
+https://preview.overleaf.com/public/swznrzxzdmjf/images/a052cb2b9fb18e98742752a010a4ae4a6e4db884.jpeg
+
+When we break down a matrix into the SVD, the matrix is divided into three different individual matrices. The equation would look like this:
+\begin{equation}
+\label{SVD}
+A = U \Sigma V^T
+\end{equation}
+
+\subsection{Solving for the SVD of a matrix.}
+\begin{itemize}
+
+\item
+The first step would be to find either\quad $A^TA$\quad  or\quad $AA^T$. We have the option to use either one in the case that we do not have a perfectly square matrix. If we began with a 2x3 matrix, we would rather solve for $AA^T$ because the matrix that turns out will be a 2x2 - instead of a 3x3.
+For example if we had 
+\begin{equation*}
+C=\begin{bmatrix*}[r]
+2 & -2 & 1 \\ 5 & 1 & 4
+\end{bmatrix*}
+\end{equation*}\quad then, 
+\begin{equation*}
+CC^T=\begin{bmatrix*}[r]
+2 & 2 & 1 \\ 5 & 1 & 4
+\end{bmatrix*} \begin{bmatrix*}[r]
+2 & 5 \\ -2 & 1 \\ 1 & 4
+\end{bmatrix*} = \begin{bmatrix*}[r]
+9 & 12 \\ 12 & 24
+\end{bmatrix*}.
+\end{equation*}
+This 2x2 matrix will be a lot easier to work with when solving for its eigenvalues and eigenvectors.
+\end{itemize}
+
+
+\subsubsection{Example using a 2x2 matrix}
+
+We will now solve for the SVD of $A_{2x2}$.
+\\
+Let us say
+
+\begin{equation*}
+A=\begin{bmatrix*}[r]
+2 & 2 \\ -1 & 1
+\end{bmatrix*}
+\end{equation*}
+
+We begin by solving for $A^TA$ or $AA^T$
+
+\begin{equation}
+A^TA=\begin{bmatrix*}[r]
+2 & -1  \\ 2 & 1
+\end{bmatrix*} \begin{bmatrix*}[r]
+2 & 2  \\ -1 & 1
+\end{bmatrix*} = \begin{bmatrix*}[r]
+5 & 3 \\ 3 & 5
+\end{bmatrix*} = Q 
+\end{equation}
+
+We will now need to find the eigenvalues and vectors of $Q$. We will use this equation to solve for the eigenvalues first. Take note that this equation only works when solving for 2x2 matrices.
+\begin{equation}
+\label{Eigensolver}
+\lambda ^2-\text{trace($Q$)$ \lambda $ + det($Q$)}=0 
+\end{equation}
+
+We will begin by finding the \quad trace($Q$). \quad The trace($Q$) is equal to the sum of the diagonals of $Q$.
+\begin{equation*}
+Q=\begin{bmatrix*}[r]
+5 & 3 \\ 3 & 5
+\end{bmatrix*}\quad\quad
+\text{then,}\quad\quad
+\text{trace($Q$)}=5+5=10
+\end{equation*}
+
+
+Next, we will solve for the det($Q$)
+\begin{equation*}
+\text{det($Q$)}=\left(5 \cdot 5\right)-\left(3 \cdot 3\right) =16
+\end{equation*}
+
+Using equation \ref{Eigensolver}, we now have
+\begin{equation*}
+\lambda ^2-10 \lambda +16=0.
+\end{equation*}
+
+
+Solving the equation will give us our eigenvalues.
+\begin{equation*}
+( \lambda -2)( \lambda - 8)=0.
+\end{equation*}
+\begin{equation}
+\label{eigenvalues}
+\lambda_{1}=2 \hspace{2cm} \lambda_{2}=8.
+\end{equation}
+
+Once we have our eigenvalues, we need to solve for our eigenvectors.
+\\
+Using
+$$
+(Q-I_{2}\lambda)=
+\begin{bmatrix}
+5-\lambda & 3 \\ 3 & 5-\lambda
+\end{bmatrix},
+$$
+with
+$$
+\lambda_{1}=2 \hspace{2cm} \text{and} \hspace{2cm} \lambda_{2}=8
+$$
+
+we get
+
+$$
+v_{1}=\begin{bmatrix*}[r]
+-1 \\ 1
+\end{bmatrix*} \hspace{1.5cm} \text{and} \hspace{1.5cm} v_{2}=\begin{bmatrix*}
+1 \\ 1
+\end{bmatrix*}
+$$
+
+We will now normalize the eigenvectors.
+\begin{equation*}
+\parallel v_{1} \parallel_{2} = \frac{1}{\sqrt{2}}\begin{bmatrix*}[r]
+-1 \\ 1
+\end{bmatrix*}\hspace{1.5cm} \text{and} \hspace{1.5cm} \parallel v_{2} \parallel_{2} = \frac{1}{2\sqrt{2}}\begin{bmatrix*}
+1 \\ 1
+\end{bmatrix*}
+\end{equation*}
+
+
+Create a matrix with the eigenvectors. This matrix will represent our $V$ matrix which will be transposed in equation \ref{SVD}.
+\begin{equation}
+\label{Vmatrix}
+V=\begin{bmatrix*}[r]
+-\frac{1}{\sqrt{2}} & \frac{1}{2\sqrt{2}} \\
+\frac{1}{\sqrt{2}} & \frac{1}{2\sqrt{2}}
+\end{bmatrix*}
+\end{equation}
+
+We will need a different equation when solving for the $U$ matrix. To do this we will have to use our eigenvalues that we have already solved for (\ref{eigenvalues}).
+
+This is the equation that we will need to solve for $U$.
+\begin{equation}
+u_{i}=\frac{1}{\sigma}Av_{i}
+\end{equation}
+\\
+To find $\sigma$, we take the square root of our respective eigenvalues. 
+$$
+\sigma_{1}=\sqrt{2} \hspace{1.5cm} \text{and} \hspace{1.5cm} \sigma_{2}=\sqrt{8}=2\sqrt{2}
+$$
+\\
+Now we plug in our respective values.\
+\\
+$$
+u_{1}=\frac{1}{\sqrt{2}}
+\begin{bmatrix*}[r]
+2 & 2 \\
+-1 & 1
+\end{bmatrix*}
+\begin{bmatrix*}[r]
+-\frac{1}{\sqrt{2}} \\
+\frac{1}{\sqrt{2}}
+\end{bmatrix*}=\begin{bmatrix*}[r]
+0 \\
+1
+\end{bmatrix*}
+$$
+and
+$$
+u_{2}=\frac{1}{2\sqrt{2}}
+\begin{bmatrix*}[r]
+2 & 2 \\
+-1 & 1
+\end{bmatrix*}
+\begin{bmatrix*}[r]
+\frac{1}{2\sqrt{2}} \\
+\frac{1}{2\sqrt{2}}
+\end{bmatrix*}=\begin{bmatrix*}[r]
+\frac{1}{2} \\
+0
+\end{bmatrix*} 
+$$
+Our completed $U$ matrix:
+\begin{equation}
+\label{Umatrix}
+U=\begin{bmatrix*}[r]
+0 & \frac{1}{2} \\
+1 & 0
+\end{bmatrix*}
+\end{equation}
+\\
+To create our $ \Sigma $ matrix, we simply place our respective $ \sigma_{i} $s on the diagonals
+\begin{equation*}
+\Sigma =\begin{bmatrix*}[l]
+\sigma_{1} & 0 \\
+0 & \sigma_{2}
+\end{bmatrix*}
+\end{equation*}
+so that
+\begin{equation}
+\label{Sigmamatrix}
+\Sigma =\begin{bmatrix*}[r]
+\sqrt{2} & 0 \\
+0 & 2\sqrt{2}
+\end{bmatrix*}.
+\end{equation} \\
+If you look back at (\ref{Umatrix}) (\ref{Sigmamatrix}) and (\ref{Vmatrix}), we now have all of our matrices that make up the SVD of $A$, our original matrix. If we look back at equation (\ref{SVD}) we can now construct our equation.
+\begin{equation}
+A=\begin{bmatrix*}[r]
+0 & \frac{1}{2} \\
+1 & 0
+\end{bmatrix*}
+\begin{bmatrix*}[r]
+\sqrt{2} & 0 \\
+0 & 2\sqrt{2}
+\end{bmatrix*}
+\begin{bmatrix*}[r]
+-\frac{1}{\sqrt{2}} & \frac{1}{2\sqrt{2}} \\
+\frac{1}{\sqrt{2}} & \frac{1}{2\sqrt{2}}
+\end{bmatrix*}^T =\begin{bmatrix*}[r]
+2 & 2 \\ -1 & 1
+\end{bmatrix*}
+\end{equation}
+We now have the SVD of a $2x2$ matrix.
+
+
+\end{document}

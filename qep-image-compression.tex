@@ -1,0 +1,236 @@
+\documentclass{article}
+
+%\usepackage[utf8]\\
+\usepackage{inputenc} %https://www.overleaf.com/5406969kxvdpz#
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{subfig}
+\begin{document}
+\begin{center}
+
+{\large  Oscar Alvarez and Hannah Grant}\\
+Texas Woman's University\\
+June 2016
+\end{center}
+\vskip0.6in
+\section*{Applying the SVD to Image Compression \\}
+
+A digital image processor's ability to construct and alter images is grounded in the coding methods of computing with linear algebra. The primary methods of linear algebra  used in image processing involve the manipulation and application of matrices. In this section, we will take a black and white image and use the strategy of finding the SVD (singular value decomposition) to achieve image compression by lowering the quality of the image meanwhile reducing the memory required for storage. Using these methods will help us find a balance that will minimize the amount of distortion while reducing memory space.
+
+Here is an image created using MATLAB by applying some of the concepts of linear algebra.\\
+\includegraphics[scale=.2]{sinmatriximage.jpg}
+
+This image was constructed using a matrix by defining its values to either the color white or black. This is just a simple example of the many possibilities of image manipulation with MATLAB.
+
+\section{Defining a matrix}
+A matrix is a useful tool when storing and managing large systems of data. A matrix is represented as $A_{(i j)}$, where $i$ is the number of rows and $j$ is the number of columns. The values inside a matrix are defined as being the elements of a matrix, or $a_{i j}$.
+\begin{equation*}
+A_{(i j)} = \begin{bmatrix*}
+a_{1 1} & a_{1 2} & . & . & . & & a_{1 j} \\
+a_{2 1} & & & & & & \\
+. & & . & & & & \\
+. & & & . & & & \\
+. & & & & . & \\
+ & & & & & & \\
+a_{i 1} & & & & & & a_{i j}
+\end{bmatrix*}
+\end{equation*} \\
+This example matrix below is represented as $C_{(3x2)}$, \\
+\begin{equation*}
+C= \begin{bmatrix*}
+2 & -1 \\
+12 & 26 \\
+4 & 9
+\end{bmatrix*}
+\end{equation*}\\
+\subsection{Matrix rank}
+Another term we need is the rank of a matrix. We can say the rank of the matrix is the number of nonzero rows once it has been reduced into row echelon form. Since our image matrices will always be reduced, we can say that the rank of our matrices will be the same as the number of rows of our matrix. Given the example matrix R,
+\begin{equation*}
+R= \begin{bmatrix*}
+2 & -1 \\
+12 & 26 \\
+\end{bmatrix*}
+\end{equation*}\\
+the rank of this matrix is $2$.
+
+\section{The Singular Value Decomposition (SVD) $$A=U \Sigma V^T$$}
+The SVD is defined as the singular value decomposition of a matrix. This means we can decompose a matrix into three smaller matrices. In the process, we can extract and create a diagonalized matrix which will contain our singular values. This singular value matrix will be represented by $\Sigma$ in the $SVD$ equation shown above.
+\par
+We need a matrix to decompose. It must be able to be diagonalized and must not have repeating eigenvalues. We represent it as $A$. We use $A$ to create the three matrices in the equation.
+% \begin{itemize}
+% \item
+% The matrix $U$ is formed by the eigenvectors of $AA^T$
+% \item
+% $\Sigma$ is the diagonalized matrix of $A$
+% \item
+% Matrix $V$ is formed by the normalized eigenvectors of $A^TA$
+% \end{itemize} 
+\begin{equation*}
+A = \begin{bmatrix}
+u_{11} & u_{12} & . & . & . & u_{1k} \\
+u_{21} & . & & & & \\
+. & & . & & & \\
+. & & & . & & \\
+. & & & & & \\
+u_{i1} & & & & & u_{ik}
+\end{bmatrix}
+\begin{bmatrix}
+s_{11} & 0 & . & . & . & 0 \\
+0 & s_{22} & & & & \\
+. & & . & & & \\
+. & & & . & & \\
+. & & & & & \\
+0 & & & & & 0
+\end{bmatrix}
+\begin{bmatrix}
+v_{11} & v_{12} & . & . & . & v_{1k} \\
+v_{21} & . & & & & \\
+. & & . & & & \\
+. & & & . & & \\
+. & & & & & \\
+v_{i1} & & & & & v_{ik}
+\end{bmatrix}^{T}
+\end{equation*}
+\normalsize
+\begin{itemize}
+\item
+The matrix $U$ is formed by the eigenvectors of $AA^T$.
+\item
+$ \Sigma $ is the matrix with the singular values of $A$ on the diagonal.
+\item
+Matrix $V$ is formed by the normalized eigenvectors of $A^TA$.
+\end{itemize}
+
+\section{MATLAB}
+MATLAB software is a powerful tool mathematicians can use when working with large matrices. We will be using MATLAB to alter an image and go over some basic coding structures.
+\subsection{Basic Coding Structures}
+In this section we introduce the main structure we need to manipulate an image and then, using MATLAB, show how to import and alter an image.
+\subsubsection{The ``For" Loop}
+\par
+A ``for" loop is a command in MATLAB used to repeat a block of code for certain values or a given amount of times. In a sense, we are constructing a row vector to determine how many times and what values we want to loop the block of code.
+\par
+For example, when we type
+\par
+\includegraphics[scale=.9]{forloopfunction1.PNG}\\
+the result is:
+\par
+\includegraphics[scale=.9]{forloopfunction1result.PNG}
+\par
+We are actually creating a row vector that has the values of 1 through 6. If we wanted to create a row vector with specific values, we can create one by inserting the numbers in brackets only separated by a comma.
+\par
+\includegraphics[scale=.9]{forloopfunction2.PNG}\\
+Result:
+\par
+\includegraphics[scale=.9]{forloopfunction2result.PNG}
+\par
+
+\par
+Let us say that we want to solve the function $y=x+2$ for the numbers 16, 3, and 4. We can use a for loop to create a row vector with these values. In the block of code inside of the ``for" loop, we would insert our equation that we would want to solve for. This will run the equation for the specified amount of times and for the specific values. Here is what a ``for" loop would look like in this situation.
+\par
+\includegraphics[scale=.9]{forloopfunction3.PNG}
+\par
+Our results will end up to be the values as requested.
+
+\par
+\includegraphics[scale=.9]{forloopfunction3result.PNG}
+\par
+Now we will do an example of a for loop using a matrix. First we will construct our matrix $A$. Then we will use a ``for" loop to change some of our values. 
+\par
+\includegraphics[scale=.9]{forloop1.PNG}
+\par
+\includegraphics[scale=.9]{forloop1matrix.PNG}
+\par
+Let us say that we want to change the values of columns 2 through 3. We create a ``for" loop for our matrix that only changes columns 2 through 3 using an equation. 
+\par
+\includegraphics[scale=.9]{forloop2.PNG}
+\par
+These are our results, 
+\par
+\includegraphics[scale=.9]{forloop2matrices.PNG}
+\par
+We can also place loops inside of loops which will make more sense once we begin applying the ``for" loop in our SVD project code.
+
+\subsubsection{Importing/Altering an Image}
+\par
+First, we begin by saving the image in a location where MATLAB can find it. Usually, it would be a good practice to create a folder where you will be keeping all of your MATLAB files for the particular project.
+To import an image into MATLAB, we will need to run the following command:\\
+\par
+\includegraphics[scale=.9]{imread.PNG} 
+\par
+This will import our image and save it as a new variable that we can use. If we want to view our image, you can display it in a new window where it will be represented by a figure.
+\par
+\includegraphics[scale=.9]{imshow1.PNG} 
+\par
+\includegraphics[scale=.6]{importsampleimage.PNG}
+\par
+We can now alter the image with code directly. Here is an example; in order to create a black and white version of the image, we can input the command 
+
+\par
+\includegraphics[scale=.9]{toBW.PNG} 
+\par
+\includegraphics[scale=.9]{inshow2.PNG} 
+\par
+\includegraphics[scale=.65]{BWimportsampleimage.PNG}
+\vspace{1cm}
+\section{Applying the SVD to image compression using MATLAB}
+Now that we have completed exercises regarding the basic coding structures of MATLAB, we can begin the process of compressing an image.
+\par
+We will begin by clearing out all previous variables to ensure that the code runs smoothly. This is done by placing the command ``clear" at the beginning of the script.
+\par
+First, we will import the image that we wish to compress into MATLAB and convert it to a black and white image (see example in 3.1.2). 
+\par
+\includegraphics[scale=.8]{SVDImportimage.PNG}
+\par
+The \,``inImageSVD = single(inImage)"\, line of code is saving the black and white image that we imported as a matrix with values having single precision. This means that we will limit the precision of our matrix by almost half so our program will only have to work with half of the bytes of the original image. For more precision you can use the \,``double()"\, command.
+\par
+The SVD command in MATLAB we will use will take our image matrix and decompose it into the three individual matrices of the SVD. 
+\par
+\includegraphics[scale=.8]{SVDMatlabcomand.PNG}
+\par
+This will create the matrices $U, S,$ and $V$. The matrix $S$ represents the matrix $ \Sigma $ in our original SVD equation.
+\par
+In our original equation, $U$ is multiplied by $ \Sigma $ then $U \Sigma $ is multiplied by $V^T$. This means that we have to change the columns of $U$ and the rows of $V^T$. This must be done by changing the number of columns of $U$. Since the matrix $V$ will be transposed in the end, we will need to change the number columns of $V$. This will change the number rows once it has been transposed. This fulfills the required dimensions necessary for matrix multiplication.
+\par
+Now that we have decomposed our matrix, we can begin to select the rank of the matrix $ \Sigma $. Since $ \Sigma $ contains all of our singular values, choosing a rank will select how many singular values we want to have.
+\par
+We will begin this process by applying a ``for'' loop where we will define our desired matrix ranks. It is best to choose between several different singular values to try, so that you can distinguish the difference in image quality. In this example, we chose ranks of 5, 15, 30, 150, and 421 (421 being the highest possible rank for this particular image). The first few matrix ranks should be spaced no more than 20 ranks apart so that you can see the gradual improvement or depreciation in quality as the rank increases or decreases. Once we hit a rank between 50 and 100, we can begin to skip a wider range (For example: 150-421). 
+
+\par
+We need to create dummy matrices that will be edited and reconstructed later on for $U$, $S$, and $V$ in the code. This completes the process of changing matrix dimensions as was mentioned above.
+\par
+\includegraphics[scale=.9]{SVDNEWforloop.JPG}
+\par
+Now we need to reconstruct the three matrices back into one by implementing the SVD equation creating a new matrix $D$.
+\par
+\includegraphics[scale=.9]{SVDmult.PNG}
+\par
+Finally once the new image matrix $D$ is made, we can display the images that we have chosen the singular values for.
+\par
+\includegraphics[scale=.9]{SVDdisplayimages.PNG}
+\par
+The code \, ``title(sprintf('SVD rank - \%d', i))" \, creates the text, "SVD rank - (number of the rank)" above the image while updating the number of the rank as it goes. Here is the code in its entirety.
+\par
+\includegraphics[scale=.9]{MATLABWORKINGCODE.PNG}
+\par
+\pagebreak
+These are our resulting images. You can see how with decreasing singular values, the quality of the image depreciates and becomes blurry and jagged.
+\par
+\begin{figure}
+\centering
+\subfloat[rank 421]{ \includegraphics[scale=.18]{figure_421_.PNG}}
+\subfloat[rank 150]{ \includegraphics[scale=.18]{figure_150_.PNG}}
+\subfloat[rank 30]{\includegraphics[scale=.18]{figure_30_.PNG} }
+\subfloat[rank 15]{\includegraphics[scale=.18]{figure_15_.PNG}}
+\subfloat[rank 5]{\includegraphics[scale=.18]{figure_5_.PNG}}
+\end{figure}
+\par
+Lowering the singular values (or the rank of $ \Sigma $) compresses our image. This compression decreases the amount of memory that the image takes up in storage; as you can see here, the compression of an image comes at a cost.
+\subsection{Memory and an Application}
+\par
+
+\quad The memory of the original image with 421 singular values ($a$) turned out to be 113 KB. The last image with 5 singular values ($e$) had a memory value of 87 KB. From having 421 singular values going to 5 singular values, we saved about 23\% of memory for this image.
+\par
+23\% can be a lot when you have a very limited amount of space or have to store a large amount of photos on a camera. This compression although is extremely useful when applying the concept onto smartphones. You may have a limited amount of memory, but now you have the ability to take a greater amount of pictures than before.
+
+\end{document}

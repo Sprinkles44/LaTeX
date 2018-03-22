@@ -1,0 +1,531 @@
+\documentclass{beamer}
+
+\usetheme{Copenhagen}
+
+
+%\usepackage{tikz}
+%\usetikzlibrary{decorations.pathmorphing}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage[final]{mcode}
+\usepackage{listings}
+\usepackage{booktabs}
+\definecolor{maroon}{rgb}{0.522, .035, .157}
+\setbeamercolor{structure}{fg=maroon!90!black}
+\usepackage{amscd}
+
+
+\title{Digital Image Manipulation:\\ Modern Applications of Linear Algebra}
+\author{Oscar Alvarez and Hannah Grant}
+\institute{Department of Mathematics and Computer Science \\
+Texas Woman's University\\
+Advisor: Dr. Alicia Machuca}
+\date{April 18, 2017}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Overview}
+\tableofcontents
+\end{frame}
+
+\section{Project 1}
+\subsection{Image Blending Using Convex Combinations}
+\begin{frame}{Using Linear Algebra ``in real life"}
+\begin{itemize}
+\item
+It is important to introduce students to real life applications of linear algebra
+\vspace{.20cm}
+\begin{itemize}
+\item
+Motivates learning
+\vspace{.20cm}
+\item
+Develops interest
+\end{itemize}
+\vspace{.20cm}
+\item
+Google, Netflix, NFL, data mining, etc.\\
+\begin{itemize}
+\item
+Websites that you may like
+\item
+New movie suggestions from ones you have already seen 
+\end{itemize}
+\end{itemize}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{itemize}
+\item
+MATLAB\\
+\begin{itemize}
+\item
+Software used\\
+\end{itemize}
+\end{itemize}
+\end{column}
+\begin{column}{.5\textwidth}
+\centering
+\includegraphics[scale=.17]{matlab.PNG}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{MATLAB}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\includegraphics[width=\textwidth]{matlab.PNG}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{itemize}
+\item
+Mathematics Engine Software
+\item
+Used by scientists and engineers around the world
+\item
+Uses a matrix-based programming language for mathematical computation
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Image as a matrix using MATLAB}
+\vspace{.5cm}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\centering
+\includegraphics[scale=.16]{sinmatriximage.jpg}
+\end{column}
+\begin{column}{.1\textwidth}
+$$
+\huge
+=
+$$
+\end{column}
+\begin{column}{.5\textwidth}
+\tiny
+$$
+\begin{bmatrix}
+0 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
+1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
+1 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
+1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
+1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 0 \\
+1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
+1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\
+1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
+1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
+\end{bmatrix}
+$$
+\end{column}
+\end{columns}
+\vspace{.5cm}
+\normalsize
+Where 0 is black and 1 is white.\\
+For a gray scale image, the pixel value is between 0 and 1.
+
+\end{frame}
+\begin{frame}{Convex Combinations}
+\begin{itemize}
+\item
+Convex combinations
+\large
+\begin{equation*}
+I =\alpha J+(1- \alpha)B 
+\end{equation*}\\
+\normalsize
+\begin{itemize}
+\item
+$J$ and $B$ are matrices
+\item
+$0\leq\alpha\leq1$
+\item
+$\alpha+(1-\alpha)=1$
+\end{itemize}
+\item
+Applying convex combinations to image blending, where J and B are images.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Convex Combinations and Image Blending}
+\begin{columns}
+\begin{column}{.35\textwidth}
+\includegraphics[scale=.150]{original.jpg}\\
+\tiny \centering Image J
+\end{column}
+\begin{column}{.35\textwidth}
+\includegraphics[scale=.03]{3.JPG}\\
+\tiny \centering Image B
+\end{column}
+\end{columns}
+\vspace{.2cm}
+\large When $\alpha$=.40\\
+\vspace{.1cm}
+\centering
+\normalsize
+\begin{columns}
+\begin{column}{.35\textwidth}
+\includegraphics[scale=.153]{squirreltimesalpha.jpg}\par
+\centering(a)\,\,$\alpha J$
+\end{column}
+\begin{column}{.35\textwidth}
+\includegraphics[scale=.153]{operatimesalphaminus.jpg}\par
+\centering(b)\,\,$(1-\alpha)B$
+\end{column}
+\begin{column}{.35\textwidth}
+\includegraphics[scale=.153]{badblend.jpg}\par
+\centering\,(c)\,\,$\alpha J+(1-\alpha)B$
+\end{column}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Convex Combinations and Image Blending}
+\centering\includegraphics[scale=.045]{2.png}
+\centering\includegraphics[scale=.045]{3.JPG}\\
+\centering\includegraphics[scale=.045]{Blended_3.png}
+\end{frame}
+
+\begin{frame}{MATLAB Program}
+\centering
+\includegraphics[scale=.5]{Capture.JPG}
+% \small
+% \begin{lstlisting}
+% clear
+
+% sqrl = imread('squirrel.jpeg');
+% BWsqrl = rgb2gray(sqrl);
+% J = double(BWsqrl);
+
+% bgbooks = imread('operahouse.jpeg');
+% BWbgbooks = rgb2gray(bgbooks);
+% B = double(BWbgbooks);
+
+% for alpha=[.40] 
+%   Blended = alpha*J(:,:)+(1-alpha)*B(:,:);
+%   figure;
+%   imshow(uint8(Blended))
+% end 
+% \end{lstlisting}
+\end{frame}
+
+\section{Project 2}
+\subsection{Image Compression Using the SVD (Singular Value Decomposition)}
+\begin{frame}{The SVD (Singular Value Decomposition)}
+$$A=U \Sigma V^T$$
+\vspace{.6cm}
+\tiny
+\begin{equation*}
+A = \begin{bmatrix}
+u_{11} & u_{12} & . & . & . & u_{1k} \\
+u_{21} & . & & & & \\
+. & & . & & & \\
+. & & & . & & \\
+. & & & & & \\
+u_{i1} & & & & & u_{ik}
+\end{bmatrix}
+\begin{bmatrix}
+s_{11} & 0 & . & . & . & 0 \\
+0 & s_{22} & & & & \\
+. & & . & & & \\
+. & & & . & & \\
+. & & & & & \\
+0 & & & & & 0
+\end{bmatrix}
+\begin{bmatrix}
+v_{11} & v_{12} & . & . & . & v_{1k} \\
+v_{21} & . & & & & \\
+. & & . & & & \\
+. & & & . & & \\
+. & & & & & \\
+v_{i1} & & & & & v_{ik}
+\end{bmatrix}^{T}
+\end{equation*}
+\normalsize
+\begin{itemize}
+\item
+The matrix $U$ is formed by the eigenvectors of $AA^T$.
+\item
+$ \Sigma $ is the matrix with the singular values of $A$ on the diagonal.
+\item
+Matrix $V$ is formed by the normalized eigenvectors of $A^TA$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The SVD (Singular Value Decomposition)}
+\begin{itemize}
+\item
+How can we apply the SVD?
+\vspace{.35cm}
+\begin{itemize}
+\item
+Singular Values
+\begin{itemize}
+\item
+Values that define the distance in relationship between related matrices.
+\end{itemize}
+\vspace{.35cm}
+\item
+Rank
+\begin{itemize}
+\item
+The number of linearly independent rows a matrix contains.
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\vspace{.6cm}
+By reducing the rank of the matrix that contains the singular values ($\Sigma$), we can eliminate values that are not as crucial.
+\end{frame}
+
+\begin{frame}{Image Compression using the SVD}
+Break up an image matrix using the SVD\\
+\centering
+\includegraphics[scale=5]{bwtwu.png}\\
+\flushleft
+\includegraphics[scale=.2]{mtwu.PNG} \, =\\
+\includegraphics[scale=.2]{utwu.PNG}\\
+\includegraphics[scale=.2]{stwu.PNG}\\
+\includegraphics[scale=.2]{vtwu.PNG}
+\end{frame}
+
+\begin{frame}{Image Compression using the SVD}
+$ \Sigma $ (S) matrix contains all of the singular values.\\
+\centering
+\includegraphics[scale=.2]{stwu.PNG}\\
+\flushleft
+Reduce $ \Sigma $ matrix size retaining only the first-most, largest values.\\
+\centering
+\vspace{.2cm}
+\includegraphics[scale=.4]{ctwu.PNG}\\
+\flushleft
+Reduce the size of other two matrices to multiply.\\
+\begin{columns}
+\begin{column}{.5\textwidth}
+\centering
+\includegraphics[scale=.3]{atwu.PNG}\\
+\end{column}
+\begin{column}{.5\textwidth}
+\centering
+\includegraphics[scale=.3]{etwu.PNG}\\
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Image Compression using the SVD}
+Multiply new matrices together to form new matrix with 3 singular values.\\
+
+\begin{columns}
+\begin{column}{.1\textwidth}
+\centering
+\includegraphics[scale=.3]{atwu.PNG} 
+\end{column}
+\begin{column}{.1\textwidth}
+$\times$
+\end{column}
+\begin{column}{.1\textwidth}
+\includegraphics[scale=.3]{ctwu.PNG}
+\end{column}
+\begin{column}{.1\textwidth}
+\centering
+$\times$
+\end{column}
+\begin{column}{.1\textwidth}
+$\includegraphics[scale=.2]{etwu.PNG}^T$
+\end{column}
+\end{columns}
+\flushleft
+This creates our new, compressed, image.\\
+\centering
+\vspace{.2cm}
+=\includegraphics[scale=.2]{dtwu.PNG}\\
+\vspace{.2cm}
+\includegraphics[scale=5]{twucomp.png}
+\end{frame}
+
+\begin{frame}{Image Compression using the SVD}
+\centering
+\includegraphics[scale=5]{bwtwu.png} \hspace{1cm} $\rightarrow$ \hspace{1cm}  \includegraphics[scale=5]{twucomp.png}\\
+\vspace{.5cm}
+Reducing the Rank of the $ \Sigma $ matrix reduces image quality but saves memory.\\
+\vspace{.5cm}
+This could prove useful when using high quality images on small phones with lower screen resolutions.\\
+\vspace{.5cm}
+The less memory your wallpaper takes up, the faster your phone can be, all-the-while retaining and displaying a good quality image.
+\end{frame}
+
+\begin{frame}{MATLAB Program}
+\centering
+\includegraphics[scale=.40]{SVDcode.PNG}
+% \begin{lstlisting}
+% clear
+
+% inImage = imread('compressionimage.jpg');
+% inImage = rgb2gray(inImage);
+% inImageSVD = single(inImage);
+
+% [U,S,V]=svd(inImageSVD);
+
+% for k=[5 30 200] %the number singular values go here
+    
+%     for i = 1:k;
+        
+%         A(:,i) = U(:,i);
+%         C(i,i) = S(i,i);
+%         E(:,i) = V(:,i);
+        
+%     end
+    
+%     D = A*C*E';
+
+%     figure;
+%     imshow(uint8(D))
+% end
+% \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Image Compression using the SVD}
+\begin{columns}
+\begin{column}{.2\textwidth}
+\centering SVD Rank\\ 421
+\includegraphics[width=\textwidth]{421.PNG}
+\end{column}
+\begin{column}{.2\textwidth}
+\centering SVD Rank\\ 150
+\includegraphics[width=\textwidth]{SVD150.PNG}
+\end{column}
+\begin{column}{.2\textwidth}
+\centering SVD Rank\\ 30
+\includegraphics[width=\textwidth]{SVD30.PNG}
+\end{column}
+\begin{column}{.2\textwidth}
+\centering SVD Rank \\ 15
+\includegraphics[width=\textwidth]{SVD15.PNG}
+\end{column}
+\begin{column}{.2\textwidth}
+\centering SVD Rank \\5
+\includegraphics[width=\textwidth]{SVD5.PNG}
+\end{column}
+\end{columns}
+\vspace{.6cm}
+*\,421 being the matrix rank of the original image
+\end{frame}
+
+\section {Tutorials}
+\begin{frame}{Tutorials}
+\begin{itemize}
+\item
+Structure
+\vspace{.20cm}
+\begin{itemize}
+\item
+Brief review of matrix manipulation and terms 
+\vspace{.20cm}
+\item
+Introduction to mathematical concepts within the projects
+\begin{itemize}
+\item
+Convex Combinations
+\item
+The SVD
+\end{itemize}
+\vspace{.20cm}
+\item
+Introduction to MATLAB exercises
+\vspace{.20cm}
+\item
+Step by step process of the projects
+\begin{itemize}
+\item
+Image blending
+\item
+Image compression
+\end{itemize}
+\vspace{.20cm}
+\end{itemize}
+\item
+Student feedback
+\begin{itemize}
+\item
+Google Forms
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Recap}
+\vspace{.5cm}
+\underline{Recap:}
+\vspace{.5cm}
+\normalsize
+\begin{itemize}
+\item
+Image Blending using convex combinations
+\vspace{.5cm}
+\item
+Image Compression using the SVD (Singular Value Decomposition)
+\vspace{.5cm}
+\item
+Tutorials
+\end{itemize}
+\vspace{.5cm}
+\end{frame}
+
+\begin{frame}{Acknowledgements}
+\begin{itemize}
+\vspace{.3cm}
+\item
+Dr. Alicia Machuca, Dr. Jian Zhang, Dr. Marie-Anne Demuynck
+\vspace{.5cm}
+\item
+TWU's Quality Enhancement Plan's Experiential Student Scholar Program
+\vspace{.5cm}
+\item
+Lamar University and TUMC
+\vspace{.5cm}
+\end{itemize}
+\end{frame}
+
+
+\bibliographystyle{plain}
+\begin{thebibliography}{10}
+\begin{frame}{Bibliography}
+\small{
+
+
+\bibitem{}
+Austin, David \textit{We Recommend a Singular Value Decomposition
+} \\http://www.ams.org/samplings/feature-column/fcarc-svd.\\ Retrieved: June 2016.
+
+\bibitem[book]{}
+Axler, Sheldon \textit{Linear Algebra Done Right} (2010).
+}
+
+\bibitem[book]{}
+Chartier, Tim \textit{When Life is Linear: From Computer Graphics to Bracketology} (2015).
+
+\bibitem[book]{}
+Downing, Douglas \textit{Dictionary of Mathematics Terms} (1995).
+
+\bibitem{}
+MathWorks \textit{MATLAB: Major Update} \\http://www.mathworks.com/products/matlab/.\\
+Retrieved: July 2016
+
+
+\end{frame}
+\end{thebibliography}
+
+
+
+
+
+\end{document}
+
+
+

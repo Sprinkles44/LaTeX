@@ -1,0 +1,235 @@
+\documentclass{article}
+\title{Blending Tutorial}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{subfigure}
+\setlength{\parskip}{1.5em}
+
+\begin{document}
+\begin{center}
+\begin{large}
+{\bf Digital Image Manipulation II:\\
+Modern Applications of Linear Algebra}
+\end{large}
+\end{center}
+
+\vskip0.3in
+\begin{center}
+{\large Oscar Alvarez and Hannah Grant}\\
+Texas Woman's University\\
+June 2016
+\end{center}
+\vskip0.6in
+\section*{Applying Matrices to Computer Image Blending}
+\section{Convex Combinations: Computer Rendering}
+A convex combination is a linear combination where both parts of the equation add up to one sole value, in this case, with a combined value of 1. A lowercase alpha ($\alpha$) will the represent the controlling variable that determines the ratio of each side of the sum. This can be expressed by the following equation. We will be dealing with matrices in our project so our variables ($J$ and $B$) are both matrices.
+\begin{equation}
+\label{convexEQ}
+I =\alpha J+(1- \alpha)B
+\end{equation}
+In a convex combination, both $\alpha$ and $(1- \alpha )$ are positive and the sum of the two must equal $1$.
+\par
+In terms of this type of image blending, $\alpha$ is the amount of image $J$ showing in the final blended image, meanwhile, (1- $\alpha $ ) is the amount of image $B$ showing in the final blended image. In the end, both parts of the equation sum up the values of each image matrix to create 1 image.
+\par
+We will be using this technique to create our own blended image using MATLAB. We will take one image, $S$, and a different image, $B$, and blend them together using equation (\ref{convexEQ}).
+
+\section{Matrix Basics}
+We will need to know some basic linear algebra techniques to complete this project. In this section, we will learn how to multiply a matrix by a scalar (a one-dimensional number such as the number $3$ or the number $8$), and adding two matrices together to make one new matrix. First we can begin with multiplying a matrix by a scalar. Let us say
+\subsection{Scalar Multiplication with a Matrix}
+Let us say we have a scalar, $k$, and a matrix, $A$.
+\begin{equation*}
+k=\begin{bmatrix}2\end{bmatrix} \hspace{2cm} A=\begin{bmatrix}
+2 & 6 & 12 \\
+4 & 7 & 4 
+\end{bmatrix} \hspace{2cm}
+\end{equation*}
+In order to multiply the scalar to the matrix, you would simply multiply the scalar to each element inside the matrix. This does not change the order of the values or shape of the matrix in any way. This is what it should look like.
+\begin{align*}
+k \cdot A=& \begin{bmatrix}2\end{bmatrix}\cdot\begin{bmatrix}
+2 & 6 & 12 \\
+4 & 7 & 4 
+\end{bmatrix}
+\\
+=&\begin{bmatrix}
+(2 \cdot 2) & (2 \cdot 6) & (2 \cdot 12) \\
+(2 \cdot 4) & (2 \cdot 7) & (2 \cdot 4) 
+\end{bmatrix}
+\end{align*}
+\\
+Thus,
+\begin{equation*}
+kA=\begin{bmatrix}
+4 & 12 & 24 \\
+8 & 14 & 8 
+\end{bmatrix}.
+\end{equation*}
+\\
+\subsection{Matrix Addition}
+Let us say that we want to calculate the sum of matrices $B$ and $C$, where\\
+\begin{equation*}
+B_{(3x3)}=\begin{bmatrix}
+2 & 3 & 1\\
+1 & 5 & 3\\
+0 & 1 & 1
+\end{bmatrix} \quad \text{and} \,\quad
+C_{(3x3)}=\begin{bmatrix} 
+1 & 2 & 7\\
+0 & 3 & 0\\
+2 & 2 & 1
+\end{bmatrix}
+\end{equation*}\\
+When performing matrix addition, both matrices must have equal dimensions because each element will be adding to its corresponding element. As shown above matrix $B$ and matrix $C$ both have dimensions of $3x3$, meaning that these matrices meet the requirement for matrix addition. We now add each element to the element lying in the corresponding position to form one combined matrix. Our sum matrix should come out to be the same dimensions as our original two matrices.
+\begin{align*}
+B+C&=\begin{bmatrix}
+(2+1) & (3+2) & (1+7)\\
+(1+0) & (5+3) & (3+0)\\
+(0+2) & (1+2) & (1+1)
+\end{bmatrix}
+\\
+&=\begin{bmatrix}
+3 & 5 & 8\\
+1 & 8 & 3\\
+2 & 3 & 2
+\end{bmatrix}
+\end{align*}
+Therefore, $B+C$ has been combined into  a new matrix. Let's call this matrix $D$\\
+\begin{equation*}
+D=
+\begin{bmatrix}
+3 & 5 & 8\\
+1 & 8 & 3\\
+2 & 3 & 2
+\end{bmatrix}
+\end{equation*}
+\section{MATLAB}
+MATLAB software is a powerful tool mathematicians can use when working with large matrices. We will be using MATLAB to alter an image and go over some basic coding structures.
+\subsection{Basic Coding Structures}
+These are some basic coding structures that we will need to manipulate an image using MATLAB.
+\subsubsection{The ``For" Loop}
+\par
+A ``for" loop is a command in MATLAB used to repeat a block of code for certain values or a certain amount of times. In a sense, we are constructing a row vector to determine how many times and what values we want to loop the block of code.
+\par
+Let us produce some values, when we type
+\par
+\includegraphics[scale=.8]{forloopfunction1.PNG}\\
+the result is:
+\par
+\includegraphics[scale=.8]{forloopfunction1result.PNG}
+\par
+We are actually creating a row vector that has the values of 1 through 6. If we wanted to create a row vector with specific values, we can create one by inserting the numbers in brackets only separated by a comma.
+\par
+\includegraphics[scale=.8]{forloopfunction2.PNG}\\
+Result:
+\par
+\includegraphics[scale=.8]{forloopfunction2result.PNG}
+\par
+
+\par
+Let us say that we want to solve the function $y=x+2$ for the numbers 16, 3, and 4. We can use a for loop to create a row vector with these values. In the block of code inside of the ``for" loop, we would insert our equation that we would want to solve for. This will run the equation for the specified amount of times and for the specific values. Here is what a ``for" loop would look like in this situation.
+\par
+\includegraphics[scale=.8]{forloopfunction3.PNG}
+\par
+Our results will end up to be the values as requested.
+
+\par
+\includegraphics[scale=.8]{forloopfunction3result.PNG}
+\par
+Now we will do an example of a for loop using a matrix. First we will construct our matrix $A$. Then we will use a ``for" loop to change some of our values. 
+\par
+\includegraphics[scale=.8]{forloop1.PNG}
+\par
+\includegraphics[scale=.8]{forloop1matrix.PNG}
+\par
+Let us say that we want to change the values of columns 2 through 3. We create a ``for" loop for our matrix that only changes columns 2 through 3 using an equation. 
+\par
+\includegraphics[scale=.8]{forloop2.PNG}
+\par
+These are our results, 
+\par
+\includegraphics[scale=.8]{forloop2matrices.PNG}
+\par
+We can also place loops inside of loops which will make more sense once we begin applying the ``for" loop in our SVD project code.
+
+\subsubsection{Importing/Altering an Image}
+\par
+First, we begin by saving the image in a location where MATLAB can find it. Usually, it would be a good practice to create a folder where you will be keeping all of your MATLAB files for the particular project.
+To import an image into MATLAB, we will need to run the following command:\\
+\par
+\includegraphics[scale=.8]{imread.PNG} 
+\par
+This will import our image and save it as a new variable that we can later use. If we want to view our image, you can display it in a new window where it will be represented by a figure (a figure is the new window that will pop up containing the image).
+\par
+\includegraphics[scale=.8]{imshow1.PNG} 
+\par
+\includegraphics[scale=.35]{importsampleimage.PNG}
+\par
+We can now alter the image with code directly. Here is an example; in order to create a black and white version of the image, we can input the command 
+
+\par
+\includegraphics[scale=.8]{toBW.PNG} 
+\par
+\includegraphics[scale=.8]{inshow2.PNG} 
+\par
+\includegraphics[scale=.35]{BWimportsampleimage.PNG}
+\vspace{1cm}
+
+\section{Blending Two Images with MATLAB}
+Overlapping two images can be possible with these techniques derived from linear algebra and applying some simple coding commands into MATLAB. We will begin.
+\par
+First off, we will need the two images that we will be wanting to overlap. (*NOTE THAT BOTH IMAGES MUST BE THE SAME SIZE for this project*). Dealing with images of different sizes is a longer, more difficult process. Here, we have chosen a picture of a local town book shop and a picture of a squirrel.
+\par
+\includegraphics[scale=.05]{OperaHouse.JPG}
+\includegraphics[scale=.06]{IMG_2047.JPG}
+\par
+Using an image editing software, we  cut the squirrel out and rearranged it in a way to appear bigger for the blending (GIMP was used for this example and Photoshop is an acceptable program, we can cut the squirrel out of the original picture). Once the squirrel was separated, we placed it on top of a white background; this makes it easier to see the two images separately when blending together. Black can also be used when dealing with two images that have a darker background. Make sure to keep the image dimensions the same between the two images.
+\par
+\includegraphics[scale=.05]{SquirrelWithWhite.png}
+\par
+Now that we have chosen our two images and edited them, we will begin the image blending process in MATLAB. \\
+First, we will clear out all variables in MATLAB by placing the command "clear" at the beginning of our script. This will ensure that the code runs smoothly. We begin by importing the images into MATLAB and converting them into black and white (See 2.1.2). Choose an image to import. the order in which you import the images does not matter. For this example, we chose to import the image of the squirrel first, and the town shop second. This set of code imports the images and converts them to black and white. Afterwards, the image is converted into a matrix with values of double precision.
+\par
+\includegraphics[scale=.8]{Scode1.PNG}
+\par
+\includegraphics[scale=.8]{Scode2.PNG}
+\par
+Now that we have imported and converted the images into matrices labeled as variables, we can begin to apply the matrices created into our equation.
+\par
+We will use a ''for" loop in order to produce several $ \alpha $ values at once.
+\par
+As we use matrices in MATLAB, we need to be sure that they are identified as matrices in MATLAB. Within the equation, be sure to identify the matrices with the Variable name that you have chosen then parenthesis containing the dimensions that you want to be affected in the process of the equation. The colons tell MATLAB that you want to include all of the values in the rows and/or columns.
+\par
+\includegraphics[scale=.8]{Scode3.PNG}
+\par
+These are the values we have chosen for "alpha", .1, .3, .5, .7, and .9. This ''for" loop will repeat the process of creating a new image for each of the "alpha" values. Inside the "for" loop and below the "alpha" values, is the equation that will blend both images together. We saved and named our new image matrix as "Blended" to use later.
+\par
+Now we need to tell MATLAB to show or display the images that we want to see. Placing this command inside the ''for" loop means that it will produce an image in a new window for each "alpha" value.
+\par
+\includegraphics[scale=.8]{Scode4.PNG}
+\par
+The ''uint8" is necessary because MATLAB needs to know that you want to display the entire image as a whole - ''uint8" contains all of the 8-bit data that is stored in variable ''Blended."
+\par
+This is the entire program code together that we have written for this image blending tutorial.
+\par
+\includegraphics[scale=.8]{Scodefull.PNG}
+\par
+Now we will run the code.
+\\
+\pagebreak
+\\
+These are the images that were produced in MATLAB shown in respective order of their ''alpha" values.
+\par
+\begin{figure}
+\subfigure[$ \alpha $ value .1]{\includegraphics[scale=.02]{Blended_1.png}}
+\subfigure[$ \alpha $ value .3]{\includegraphics[scale=.02]{Blended_3.png}}
+\subfigure[$ \alpha $ value .5]{\includegraphics[scale=.02]{Blended_5.png}}
+\subfigure[$ \alpha $ value .7]{\includegraphics[scale=.02]{Blended_7.png}}
+\subfigure[$ \alpha $ value .9]{\includegraphics[scale=.02]{Blended_9.png}}
+\end{figure}
+\par
+As a result, we can observe that as the $\alpha$ value increases, the image matrix that it is associated with (the squirrel) becomes more visible. The increasing $\alpha$ value also causes the values of the other image matrix (the town shop) to decrease, causing it to fade. The lack of values from one image is made up by the other image. This difference creates somewhat of a blending effect with our two images, where they do not necessarily overlap, but instead, blend in with one another.
+\par
+
+
+\end{document}
